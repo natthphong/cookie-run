@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import ingame.CookieImg;
+import sound.SoundPlayer;
 
 public class SelectPanel extends JPanel {
 
@@ -33,6 +34,8 @@ public class SelectPanel extends JPanel {
 	private JButton[] chButtons = new JButton[4];
 	private CookieImg ci;
 	private JButton StartBtn;
+
+	private SoundPlayer click = new SoundPlayer("sound/wav/jump.wav");
 
 	public CookieImg getCi() {
 		return ci;
@@ -64,6 +67,7 @@ public class SelectPanel extends JPanel {
 			chButtons[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
+					click.startPlay(1);
 					for (int j = 0; j < chButtons.length; j++) {
 						chButtons[j].setIcon((j == index) ? selectedChIcons[j] : chIcons[j]);
 					}

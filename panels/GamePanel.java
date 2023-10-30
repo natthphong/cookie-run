@@ -2,6 +2,7 @@ package panels;
 
 import ingame.*;
 import main.Main;
+import sound.SoundPlayer;
 import util.Util;
 
 import javax.swing.*;
@@ -127,6 +128,11 @@ public class GamePanel extends JPanel {
 	JFrame superFrame;
 	CardLayout cl;
 	Main main;
+	SoundPlayer gameMusic;
+	SoundPlayer gameJump;
+
+	SoundPlayer jellyMusic;
+	SoundPlayer charHit;
 
 
 	public GamePanel(JFrame superFrame, CardLayout cl, Object o) {
@@ -134,7 +140,10 @@ public class GamePanel extends JPanel {
 		this.superFrame = superFrame;
 		this.cl = cl;
 		this.main = (Main) o;
-
+		gameMusic = new SoundPlayer("sound/wav/gameMusic.wav");
+		gameJump = new SoundPlayer("sound/wav/jump.wav");
+		jellyMusic = new SoundPlayer("sound/wav/jelly.wav");
+		charHit  = new SoundPlayer("sound/wav/explode.wav");
 		escButton = new JButton("back");
 		escButton.setBounds(350, 200, 100, 30);
 		escButton.addMouseListener(new MouseAdapter() {
@@ -164,7 +173,9 @@ public class GamePanel extends JPanel {
 
 	public void gameStart() {
 
+		gameMusic.startPlayLoop();
 		mapMove();
+
 
 		fall();
 
@@ -586,6 +597,7 @@ public class GamePanel extends JPanel {
 
 
 	private void initListener() {
+
 		addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -604,10 +616,13 @@ public class GamePanel extends JPanel {
 
 				if (!escKeyOn) {
 					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
+						gameJump.startPlay(25);
 						jumpBtn = jumpButtonIconDown.getImage();
 						if (c1.getCountJump() < 2) {
 							jump();
 						}
+
+
 					}
 					if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 						slideBtn = slideIconDown.getImage();
@@ -706,6 +721,7 @@ public class GamePanel extends JPanel {
 									"default");
 						}
 						if (choice == JOptionPane.YES_OPTION) {
+							gameMusic.stopPlayer();
 							cl.show(superFrame.getContentPane(), "end");
 							main.setGamePanel(new GamePanel(superFrame, cl, main));
 							superFrame.requestFocus();
@@ -896,7 +912,7 @@ public class GamePanel extends JPanel {
 								}
 								tempJelly.setImage(jellyEffectIc.getImage());
 								resultScore = resultScore + tempJelly.getScore();
-
+								jellyMusic.startPlay(15);
 							} else if (
 							c1.getImage() == slideIc.getImage()
 									&& tempJelly.getX() + tempJelly.getWidth() * 20 / 100 >= c1.getX()
@@ -905,7 +921,6 @@ public class GamePanel extends JPanel {
 											+ c1.getHeight() * 1 / 3
 									&& tempJelly.getY() + tempJelly.getWidth() * 80 / 100 <= foot
 									&& tempJelly.getImage() != jellyEffectIc.getImage()) {
-
 								if (tempJelly.getImage() == jellyHPIc.getImage()) {
 									if ((c1.getHealth() + 100) > 1000) {
 										c1.setHealth(1000);
@@ -915,7 +930,7 @@ public class GamePanel extends JPanel {
 								}
 								tempJelly.setImage(jellyEffectIc.getImage());
 								resultScore = resultScore + tempJelly.getScore();
-
+								jellyMusic.startPlay(15);
 							}
 						}
 					}
@@ -1037,6 +1052,7 @@ public class GamePanel extends JPanel {
 			@Override
 			public void run() {
 
+				charHit.startPlay(20);
 				c1.setInvincible(true);
 
 				System.out.println("hello world");

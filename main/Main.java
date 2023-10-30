@@ -15,6 +15,7 @@ import panels.GamePanel;
 import panels.IntroPanel;
 import panels.SelectPanel;
 import main.listenAdapter;
+import sound.SoundPlayer;
 
 import java.awt.CardLayout;
 
@@ -47,6 +48,9 @@ public class Main extends listenAdapter {
     public EndPanel getEndPanel() {
         return endPanel;
     }
+
+
+    private SoundPlayer lobbyMusic;
 
 
     /**
@@ -89,6 +93,7 @@ public class Main extends listenAdapter {
         gamePanel.setLayout(null);
         endPanel.setLayout(null);
 
+        lobbyMusic  = new SoundPlayer("sound/wav/LobbyMusic.wav");
         frame.getContentPane().add(introPanel, "intro");
         frame.getContentPane().add(selectPanel, "select");
         frame.getContentPane().add(gamePanel, "game");
@@ -107,10 +112,12 @@ public class Main extends listenAdapter {
             cl.show(frame.getContentPane(), "select");
             selectPanel.requestFocus();
 
+            lobbyMusic.startPlayLoop();
         } else if (e.getComponent().getName().equals("StartBtn")) {
             if (selectPanel.getCi() == null) {
                 JOptionPane.showMessageDialog(null, "LET START");
             } else {
+                lobbyMusic.stopPlayer();
                 cl.show(frame.getContentPane(), "game");
                 gamePanel.gameSet(selectPanel.getCi());
                 gamePanel.gameStart();
@@ -123,6 +130,7 @@ public class Main extends listenAdapter {
             gamePanel.setLayout(null);
             frame.getContentPane().add(gamePanel, "game");
 
+            lobbyMusic.startPlayLoop();
             frame.getContentPane().remove(selectPanel);
             selectPanel = new SelectPanel(this);
             selectPanel.setLayout(null);
