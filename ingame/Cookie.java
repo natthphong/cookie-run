@@ -26,7 +26,17 @@ public class Cookie {
 	private boolean invincible = false;
 	private boolean fall = false;
 	private boolean jump = false;
-	
+
+	private int reset = 2;
+
+	public int getReset() {
+		return reset;
+	}
+
+	public void setReset(int reset) {
+		this.reset = reset;
+	}
+
 	public Cookie(Image image){
 		this.image = image;
 	}

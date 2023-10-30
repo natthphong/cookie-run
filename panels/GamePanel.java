@@ -180,7 +180,7 @@ public class GamePanel extends JPanel {
 		if (buffg == null) {
 			buffImage = createImage(this.getWidth(), this.getHeight());
 			if (buffImage == null) {
-				System.out.println("���� ���۸��� ���� ��ũ�� ���� ����");
+				System.out.println("llll");
 			} else {
 				buffg = buffImage.getGraphics();
 			}
@@ -419,11 +419,11 @@ public class GamePanel extends JPanel {
 			for (int j = 0; j < maxY; j += 1) {
 				if (colorArr[i][j] == 16776960) {
 				
-					jellyList.add(new Jelly(jelly1Ic.getImage(), i * 40 + mapLength * 40, j * 40, 30, 30, 255, 1234));
+					jellyList.add(new Jelly(jelly1Ic.getImage(), i * 40 + mapLength * 40, j * 40, 40, 40, 255, 1234));
 
 				} else if (colorArr[i][j] == 13158400) {
 				
-					jellyList.add(new Jelly(jelly2Ic.getImage(), i * 40 + mapLength * 40, j * 40, 30, 30, 255, 2345));
+					jellyList.add(new Jelly(jelly2Ic.getImage(), i * 40 + mapLength * 40, j * 40, 40, 40, 255, 2345));
 
 				} else if (colorArr[i][j] == 9868800) {
 				
@@ -504,7 +504,19 @@ public class GamePanel extends JPanel {
 		initImageIcon(mo1);
 		initMap(1, mapLength);
 		mapLengthList.add(mapLength);
+		initImageIcon(mo1);
+		initMap(1, mapLength);
+		mapLengthList.add(mapLength);
+		initImageIcon(mo1);
+		initMap(1, mapLength);
+		mapLengthList.add(mapLength);
 
+		initImageIcon(mo2);
+		initMap(2, mapLength);
+		mapLengthList.add(mapLength);
+		initImageIcon(mo2);
+		initMap(2, mapLength);
+		mapLengthList.add(mapLength);
 		initImageIcon(mo2);
 		initMap(2, mapLength);
 		mapLengthList.add(mapLength);
@@ -512,10 +524,25 @@ public class GamePanel extends JPanel {
 		initImageIcon(mo3);
 		initMap(3, mapLength);
 		mapLengthList.add(mapLength);
+		initImageIcon(mo3);
+		initMap(3, mapLength);
+		mapLengthList.add(mapLength);
+		initImageIcon(mo3);
+		initMap(3, mapLength);
+		mapLengthList.add(mapLength);
 
 		initImageIcon(mo4);
 		initMap(4, mapLength);
-
+		mapLengthList.add(mapLength);
+		initImageIcon(mo4);
+		initMap(4, mapLength);
+		mapLengthList.add(mapLength);
+		initImageIcon(mo4);
+		initMap(4, mapLength);
+		mapLengthList.add(mapLength);
+		initImageIcon(mo4);
+		initMap(4, mapLength);
+		mapLengthList.add(mapLength);
 	
 		backIc = mo1.getBackIc();
 		secondBackIc = mo1.getSecondBackIc();
@@ -612,7 +639,7 @@ public class GamePanel extends JPanel {
 					}
 				}
 
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
 					jumpBtn = jumpButtonIconUp.getImage();
 				}
 			}
@@ -667,10 +694,36 @@ public class GamePanel extends JPanel {
 					foot = c1.getY() + c1.getHeight();
 					if (foot > 1999 || c1.getHealth() < 1) {
 						main.getEndPanel().setResultScore(resultScore);
-						cl.show(superFrame.getContentPane(), "end");
-						main.setGamePanel(new GamePanel(superFrame, cl, main));
-						superFrame.requestFocus();
-						escKeyOn = true;
+						int choice = 0;
+						if (c1.getReset() != 0 ) {
+							 choice = JOptionPane.showOptionDialog(superFrame,
+									"Do you want to continue?",
+									"Game Over",
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE,
+									null,
+									new String[]{"NO", "YES"},
+									"default");
+						}
+						if (choice == JOptionPane.YES_OPTION) {
+							cl.show(superFrame.getContentPane(), "end");
+							main.setGamePanel(new GamePanel(superFrame, cl, main));
+							superFrame.requestFocus();
+							escKeyOn = true;
+						} else {
+							c1.setHealth(400);
+							c1.setInvincible(true);
+							c1.setY(0);
+							c1.setReset(c1.getReset()-1);
+							try {
+								Thread.sleep(200);
+							}catch (Exception ignore) {
+
+							}
+						}
+
+						c1.setInvincible(false);
+
 					}
 
 				
@@ -1166,7 +1219,7 @@ public class GamePanel extends JPanel {
 
 				long t1 = Util.getTime();
 				long t2;
-				int set = 8;
+				int set = 9;
 				int jumpY = 1;
 
 				while (jumpY >= 0) {
